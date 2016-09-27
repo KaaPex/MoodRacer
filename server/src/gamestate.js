@@ -10,17 +10,19 @@ class GameState {
     }
 
     getRoom() {
-        let lastFreeRoom = this._rooms.pop();
+        let length = this._rooms.length;
+        let lastFreeRoom = this._rooms[length - 1];
 
         if (lastFreeRoom && lastFreeRoom.users < 4) {
             // если есть свободная комната и в ней меньше 4х игроков,
             // то увеличиваем число игроков и возвращаем ее
             lastFreeRoom.users += 1;
+            this._rooms[length - 1] = lastFreeRoom;
             return lastFreeRoom;
         } else {
             // не нашли, тогда создаем новую комнату, добавляем ее в массив и возвращаем
             lastFreeRoom = {
-                name: "Room#" + this._rooms.length + 1,
+                name: "Room#" + ( length + 1 ),
                 users: 1
             };
             this._rooms.push(lastFreeRoom);

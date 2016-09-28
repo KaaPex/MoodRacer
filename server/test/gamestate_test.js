@@ -41,4 +41,15 @@ describe('GameState class logic', () => {
 
         expect(gameState.getRoom()).to.deep.equal(room);
     });
+
+    it ('init game state', () => {
+        let gameState = new GameState();
+        gameState.init();
+
+        const state = [
+            { name: "test1", score: 1000},
+            { name: "test2", score: 500}
+        ];
+        expect(gameState.top).to.deep.equal(state);
+    });
 });

@@ -1,11 +1,15 @@
 "use strict";
-
+import Game from './Game';
 let main = document.querySelector(".app");
-let field = document.createElement("div");
-field.style.width = "100px";
-field.style.height = "100px";
-field.style.backgroundColor = "red";
+let canvas = document.createElement("canvas");
+canvas.width = 800;
+canvas.height = 600;
+canvas.className = 'game';
 
-main.appendChild(field);
+main.appendChild(canvas);
+
+let options = {fps: 60, debug: true};
+let game = new Game(canvas, options);
+game.start();
 
 

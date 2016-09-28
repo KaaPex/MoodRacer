@@ -14,11 +14,12 @@ class Game {
         }
         this._canvas =  window;
         this.__gameId = null;
-        this.__tick = options.fps / 3.75 || 16; // 60 fps is exact 16ms
+        this.__tick = options.fps / 3.75 || 16; // 60 fps is roughly 16ms
         this.__lastTick = this.__lastRender = performance.now();
         this.isPaused = false;
         this._debug = options.debug;
         this._debugElem = null;
+        this._fps = 0;
     }
 
     /**
@@ -76,7 +77,15 @@ class Game {
                 lastRenderElem.className = "debug__last-render";
                 this._debugElem.appendChild(lastRenderElem);
             }
-            lastRenderElem.textContent = "Last Render: " + Math.floor(this.__lastRender);
+            lastRenderElem.textContent = "Last Render: " + Math.floor(this.__lastRender / 1000);
+
+            let fpsElem = this._debugElem.querySelector(".debug__fps");
+            if (!fpsElem) {
+                fpsElem = document.createElement("div");
+                fpsElem.className = "debug__fps";
+                this._debugElem.appendChild(fpsElem);
+            }
+            fpsElem.textContent = "FPS: " + Math.floor(this._fps);
         }
     }
 
@@ -96,7 +105,7 @@ class Game {
             let timeSinceTick = timestamp - this.__lastTick;
             numTicks = Math.floor( timeSinceTick / this.__tick );
         }
-
+        this._fps = 1000 / (timestamp - this.__lastRender);
         // update  current state
         this._queueUpdates(numTicks);
         // render current frame

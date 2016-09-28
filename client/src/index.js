@@ -8,8 +8,6 @@ canvas.className = 'game';
 
 main.appendChild(canvas);
 
-let options = {fps: 60, debug: true};
+let options = {fps: 30, debug: true};
 let game = new Game(canvas, options);
 game.start();
-
-

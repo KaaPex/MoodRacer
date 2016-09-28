@@ -16,6 +16,7 @@ let hasGame = (globalSymbols.indexOf(GAME_KEY) > -1);
 // если не нашли, то создаем
 if (!hasGame){
     global[GAME_KEY] = new GameState();
+    global[GAME_KEY].init();
 }
 
 // объявляем синглтон

@@ -3,23 +3,33 @@
  * Game of client project
  */
 "use strict";
+import Debug from "./Debug";
 
 /**
  * Main game class
  */
 class Game {
-    constructor(window, options = {fps: 60, debug: false} ) {
-        if (!window) {
-            throw "Window canvas not set";
+    constructor(anchor, options = {fps: 60, debug: false} ) {
+        if (!anchor) {
+            throw "Parent element not set";
         }
-        this._canvas =  window;
+        this._canvas = anchor;
         this.__gameId = null;
         this.__tick = options.fps / 3.75 || 16; // 60 fps is roughly 16ms
-        this.__lastTick = this.__lastRender = performance.now();
-        this.isPaused = false;
-        this._debug = options.debug;
+        this.__lastTick = performance.now();
+        this.__lastRender = this.__lastTick;
+        this._isPaused = false;
+        this._isDebug = options.debug;
         this._debugElem = null;
         this._fps = 0;
+    }
+
+    get fps() {
+        return this._fps;
+    }
+
+    get lastRender() {
+        return this.__lastRender;
     }
 
     /**
@@ -29,19 +39,9 @@ class Game {
     _setInitialState() {
 
         // init element for debug output
-        if (this._debug) {
-            let rect = this._canvas.getBoundingClientRect();
-            let debugElement = document.createElement("div");
-            debugElement.className = "debug";
-            debugElement.style.position = "absolute";
-            debugElement.style.opacity = 0.7;
-            debugElement.style.color = "#fff";
-            debugElement.style.background = "gray";
-            debugElement.style.top = rect.top + 'px';
-            debugElement.style.left = rect.left + 'px';
-            debugElement.innerHTML = "Debug Mode";
-            this._debugElem = debugElement;
-            document.body.appendChild(this._debugElem);
+        if (this._isDebug) {
+            this._debugElem = new Debug(this._canvas);
+            this._debugElem.init();
         }
     }
 
@@ -50,7 +50,7 @@ class Game {
      * @private
      */
     _update() {
-
+        // change game objects state with this.__lastTick
     }
 
     _queueUpdates(numTicks) {
@@ -64,8 +64,8 @@ class Game {
 
 
         // render debug information on main screen
-        if (this._debug) {
-            this._debugRender();
+        if (this._isDebug) {
+            this._debugElem.render(this);
         }
     }
 
@@ -112,8 +112,8 @@ class Game {
         this._render();
 
         this.__lastRender = timestamp;
-        if (!this.isPaused) {
-            this.__gameId = window.requestAnimationFrame(this._mainFrame.bind(this));
+        if (!this._isPaused) {
+            this.__gameId = window.requestAnimationFrame(this._mainFrame.bind(this)); // it's usually call every 16ms
         }
     }
 
@@ -130,9 +130,9 @@ class Game {
      * Pause the game
      */
     togglePause() {
-        this.isPaused = !this.isPaused;
+        this._isPaused = !this._isPaused;
         // game is not paused, restore last render to tick
-        if (!this.isPaused) {
+        if (!this._isPaused) {
             this.__lastTick = this.__lastRender;
         }
     }

@@ -1,5 +1,5 @@
 "use strict";
-import Game from './Game';
+import Game from './core/Game';
 let main = document.querySelector(".app");
 let canvas = document.createElement("canvas");
 canvas.width = 800;

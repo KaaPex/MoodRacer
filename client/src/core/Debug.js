@@ -1,6 +1,6 @@
 /**
  * Created on 29.09.16.
- * Game of client project
+ * Debug of client project
  */
 "use strict";
 

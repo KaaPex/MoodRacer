@@ -4,6 +4,7 @@
  */
 "use strict";
 import Debug from "./Debug";
+import GameObject from "./GameObject";
 
 /**
  * Main game class
@@ -14,6 +15,7 @@ class Game {
             throw "Parent element not set";
         }
         this._canvas = anchor;
+        this._ctx = this._canvas.getContext('2d');
         this.__gameId = null;
         this.__tick = options.fps / 3.75 || 16; // 60 fps is roughly 16ms
         this.__lastTick = performance.now();
@@ -22,6 +24,8 @@ class Game {
         this._isDebug = options.debug;
         this._debugElem = null;
         this._fps = 0;
+
+        this._objects = []; // list of game objects
     }
 
     get fps() {
@@ -32,16 +36,31 @@ class Game {
         return this.__lastRender;
     }
 
+    _clearCanvas() {
+        // black color
+        this._ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+        this._ctx.fillRect(0, 0, this._canvas.width, this._canvas.height);
+    }
+
     /**
      * Init starting state of the game and all game objects
      * @private
      */
     _setInitialState() {
+        this._clearCanvas();
 
         // init element for debug output
         if (this._isDebug) {
             this._debugElem = new Debug(this._canvas);
             this._debugElem.init();
+
+            // add test element for debug
+            let testGameObj = new GameObject();
+            testGameObj.position = {
+                x: 300,
+                y: 300
+            };
+            this._objects.push(testGameObj);
         }
     }
 
@@ -51,6 +70,9 @@ class Game {
      */
     _update() {
         // change game objects state with this.__lastTick
+        this._objects.map( (object) => {
+            object.update(this.__lastTick);
+        });
     }
 
     _queueUpdates(numTicks) {
@@ -60,32 +82,15 @@ class Game {
         }
     }
 
-    _render() {
-
+    _render(timestamp) {
+        this._clearCanvas();
+        this._objects.map( (object) => {
+            object.render(this._ctx, timestamp);
+        });
 
         // render debug information on main screen
         if (this._isDebug) {
             this._debugElem.render(this);
-        }
-    }
-
-    _debugRender() {
-        if (this._debugElem) {
-            let lastRenderElem = this._debugElem.querySelector(".debug__last-render");
-            if (!lastRenderElem) {
-                lastRenderElem = document.createElement("div");
-                lastRenderElem.className = "debug__last-render";
-                this._debugElem.appendChild(lastRenderElem);
-            }
-            lastRenderElem.textContent = "Last Render: " + Math.floor(this.__lastRender / 1000);
-
-            let fpsElem = this._debugElem.querySelector(".debug__fps");
-            if (!fpsElem) {
-                fpsElem = document.createElement("div");
-                fpsElem.className = "debug__fps";
-                this._debugElem.appendChild(fpsElem);
-            }
-            fpsElem.textContent = "FPS: " + Math.floor(this._fps);
         }
     }
 
@@ -109,7 +114,7 @@ class Game {
         // update  current state
         this._queueUpdates(numTicks);
         // render current frame
-        this._render();
+        this._render(timestamp);
 
         this.__lastRender = timestamp;
         if (!this._isPaused) {

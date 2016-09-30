@@ -4,24 +4,28 @@
  */
 "use strict";
 
-class GameObject {
-    constructor() {
-        this._position = {
-            x: 0,
-            y: 0
-        };
-        this._size = {
-            width: 100,
-            height: 100
-        };
+const DEFAULT_GAME_OBJECT_STATE = {
+    position: {
+        x: 0,
+        y: 0
+    },
+    size: {
+        width: 100,
+        height: 100
+    },
+    rotation: 0,
+    scale: 1
+};
 
-        this._scale = 1; // min 0 - max 1
+class GameObject {
+    constructor(state = DEFAULT_GAME_OBJECT_STATE) {
+        this._state = state;
 
         this._name = "object";
 
         this._canvas = document.createElement('canvas');
-        this._canvas.width = this._size.width;
-        this._canvas.height = this._size.height;
+        this._canvas.width = this.size.width;
+        this._canvas.height = this.size.height;
 
         this._2dContext = this._canvas.getContext('2d');
     }
@@ -34,28 +38,52 @@ class GameObject {
         this._2dContext.restore();
     }
 
+    set state(state) {
+        this._state = Object.assign({}, this._state, state);
+    }
+
+    set size(size) {
+        this.state = {size};
+        this._canvas.width = this._state.size.width;
+        this._canvas.height = this._state.size.height;
+    }
+
+    get size() {
+        return this._state.size;
+    }
+
     set position(position) {
-        this._position = position;
+        this.state = {position};
     }
 
-    setSize(size) {
-        this._size = size;
-        this._canvas.width = this._size.width;
-        this._canvas.height = this._size.height;
+    get position() {
+        return this._state.position;
     }
 
-    render(mainContext, tFrame) {
+    render(mainContext, timestamp) {
+
         // add to main game context
+        if (this.position.x > mainContext.canvas.width) {
+            this.position.x -= mainContext.canvas.width;
+        }
 
-        let imgData = this._2dContext.getImageData(0, 0, this._size.width, this._size.height);
-        mainContext.putImageData(imgData, this._position.x, this._position.y, 0, 0, this._size.width * this._scale, this._size.height * this._scale);
+        let imgData = this._2dContext.getImageData(0, 0, this.size.width, this.size.height);
+        mainContext.putImageData(imgData,
+                                                       this.position.x, this.position.y,
+                                                       0, 0,
+                                                       this.size.width * this._state.scale,
+                                                       this.size.height * this._state.scale);
     }
 
-    update(progress) {
+    update(lastTick) {
+        let progress = (performance.now() - lastTick) / 8;
+
+        this.position.x += progress;
+
         this._clearCanvas();
         this._2dContext.save();
-        this._2dContext.translate(this._size.width * this._scale / 2, this._size.height * this._scale / 2); // move to center of the canvas
-        this._2dContext.rotate((Math.PI/180) * progress/10);
+        this._2dContext.translate(this.size.width * this._state.scale / 2, this.size.height * this._state.scale / 2); // move to center of the canvas
+        //this._2dContext.rotate((Math.PI/180) * progress);
         this._2dContext.fillStyle = "#FFF";
         this._2dContext.font = '22px serif';
         this._2dContext.textAlign = 'center';

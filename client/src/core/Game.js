@@ -55,12 +55,14 @@ class Game {
             this._debugElem.init();
 
             // add test element for debug
-            let num = 100;
+            let num = 1;
             while (num > 0) {
                 let testGameObj = new GameObject();
-                testGameObj.position = {
-                    x: Math.random() * 800,
-                    y: Math.random() * 600,
+                testGameObj.state = {
+                    position: {
+                        x: Math.random() * 800,
+                        y: Math.random() * 600
+                    }
                 };
                 this._objects.push(testGameObj);
                 num -= 1;

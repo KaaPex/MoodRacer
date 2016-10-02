@@ -1,5 +1,5 @@
 {
-  "name": "voting-client",
+  "name": "MoodRacer-client",
   "version": "1.0.0",
   "description": "Client side Mood Racer game",
   "main": "index.js",

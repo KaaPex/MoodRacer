@@ -20,7 +20,8 @@ describe('GameObject class logic', () => {
             position: { x: 100, y: 100 },
             size: { width: 100, height: 100 },
             rotation: 0,
-            scale: 1
+            scale: 1,
+            clearColor: "#4D4E53"
         };
 
         gameObject.state = {position};
@@ -38,7 +39,8 @@ describe('GameObject class logic', () => {
             position: { x: 0, y: 0 },
             size: { width: 200, height: 200 },
             rotation: 0,
-            scale: 1
+            scale: 1,
+            clearColor: "#4D4E53"
         };
 
         gameObject.size = size;

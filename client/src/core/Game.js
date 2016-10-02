@@ -5,6 +5,7 @@
 "use strict";
 import Debug from "./Debug";
 import GameObject from "./GameObject";
+import StaticText from "../objects/interface/StaticText";
 
 /**
  * Main game class
@@ -67,6 +68,16 @@ class Game {
                 this._objects.push(testGameObj);
                 num -= 1;
             }
+
+            //add static text
+            let sText = new StaticText();
+            sText.state = {
+                position: {
+                    x: 100,
+                    y: 300
+                }
+            };
+            this._objects.push(sText);
         }
     }
 

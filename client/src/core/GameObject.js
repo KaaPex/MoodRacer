@@ -14,7 +14,8 @@ const DEFAULT_GAME_OBJECT_STATE = {
         height: 100
     },
     rotation: 0,
-    scale: 1
+    scale: 1,
+    clearColor: "#4D4E53"
 };
 
 class GameObject {
@@ -33,7 +34,7 @@ class GameObject {
     _clearCanvas() {
         // gray color
         this._2dContext.save();
-        this._2dContext.fillStyle = "#4D4E53";
+        this._2dContext.fillStyle = this._state.clearColor;
         this._2dContext.fillRect(0, 0, this._canvas.width, this._canvas.height);
         this._2dContext.restore();
     }

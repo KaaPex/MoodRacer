@@ -1,6 +1,9 @@
 # MoodRacer
 Client-server racer game
 
+# Test Site
+http://kaapex.github.io/MoodRacer
+
 # How to use
 At console just type
 npm install

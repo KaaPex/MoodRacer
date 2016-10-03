@@ -1,5 +1,5 @@
 "use strict";
-import Game from './Game';
+import Game from './core/Game';
 let main = document.querySelector(".app");
 let canvas = document.createElement("canvas");
 canvas.width = 800;
@@ -11,3 +11,4 @@ main.appendChild(canvas);
 let options = {fps: 30, debug: true};
 let game = new Game(canvas, options);
 game.start();
+//game.togglePause();

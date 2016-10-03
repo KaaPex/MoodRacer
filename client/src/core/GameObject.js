@@ -29,6 +29,7 @@ class GameObject {
         this._canvas.height = this.size.height;
 
         this._2dContext = this._canvas.getContext('2d');
+
     }
 
     _clearCanvas() {

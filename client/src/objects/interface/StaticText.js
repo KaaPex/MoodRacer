@@ -22,7 +22,7 @@ class StaticText extends GameObject {
         this._textOpt = options;
         this._text = text;
         this._name = "StaticText";
-        this._fontHeight = this.getFontHeight(this._textOpt.font);
+        this._fontHeight = StaticText.getFontHeight(this._textOpt.font);
 
         // set canvas size for one line text with margin? if need
         if (this._textOpt.marginLeft * 2 + this._textOpt.lineWidth > this._canvas.width) {
@@ -31,7 +31,7 @@ class StaticText extends GameObject {
         // we need measure text to fit it in multiline
     }
 
-    getFontHeight(font) {
+    static getFontHeight(font) {
         let parent = document.createElement("span");
         parent.appendChild(document.createTextNode("height"));
         document.body.appendChild(parent);

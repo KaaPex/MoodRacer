@@ -1,5 +1,8 @@
 "use strict";
+
+import DataManager from './core/DataManager';
 import Game from './core/Game';
+
 let main = document.querySelector(".js-app");
 let canvas = document.createElement("canvas");
 canvas.width = 800;
@@ -8,6 +11,12 @@ canvas.className = 'game';
 
 main.appendChild(canvas);
 
+
+// Load data
+let dm = new DataManager('./data/cars_sprite_sheets.gif', null);
+dm.preLoad();
+
+// start game
 let options = {fps: 60, debug: true};
 let game = new Game(canvas, options);
 game.start();

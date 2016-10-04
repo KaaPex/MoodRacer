@@ -18,8 +18,8 @@ class Game {
         this._canvas = anchor;
         this._ctx = this._canvas.getContext('2d');
         this.__gameId = null;
-        this.__tick = options.fps / 3.75 || 16; // 60 fps is roughly 16ms
-        this.__lastTick = performance.now();
+        this.__tickLength = options.fps / 3.75 || 16; // 60 fps is roughly 16ms
+        this.__lastTick = window.performance.now();
         this.__lastRender = this.__lastTick;
         this._isPaused = false;
         this._isDebug = options.debug;
@@ -70,12 +70,17 @@ class Game {
             }
 
             //add static text
-            let sText = new StaticText();
+            let sText = new StaticText("Hello i'am a long text for testing");
             sText.state = {
                 position: {
                     x: 100,
                     y: 300
-                }
+                },
+                size: {
+                    width: 300,
+                    height: 100
+                },
+                clearColor: "green"
             };
             this._objects.push(sText);
         }
@@ -88,13 +93,13 @@ class Game {
     _update() {
         // change game objects state with this.__lastTick
         this._objects.map( (object) => {
-            object.update(this.__lastTick);
+            object.update(this.__tickLength);
         });
     }
 
     _queueUpdates(numTicks) {
         for(let i=0; i < numTicks; i++) {
-            this.__lastTick = this.__lastTick + this.__tick; //Now lastTick is this tick.
+            this.__lastTick = this.__lastTick + this.__tickLength; //Now lastTick is this tick.
             this._update();
         }
     }
@@ -117,31 +122,36 @@ class Game {
      * @private
      */
     _mainFrame(timestamp) {
+        if (!this._isPaused) {
+            this.__gameId = window.requestAnimationFrame(this._mainFrame.bind(this)); // it's usually call every 16ms
+        }
+
         // evaluate when will be next render
-        let nextTick = this.__lastTick + this.__tick;
+        let nextTick = this.__lastTick + this.__tickLength;
         let numTicks = 0;
 
         //If timestamp < nextTick then 0 ticks need to be updated (0 is default for numTicks).
         //If timestamp = nextTick then 1 tick needs to be updated (and so forth).
         if (timestamp > nextTick) {
             let timeSinceTick = timestamp - this.__lastTick;
-            numTicks = Math.floor( timeSinceTick / this.__tick );
+            // how many updates we should do beetween two rendered frames
+            numTicks = Math.floor( timeSinceTick / this.__tickLength );
         }
+
+        // metrics
         this._fps = 1000 / (timestamp - this.__lastRender);
+
         // update  current state
         this._queueUpdates(numTicks);
         // render current frame
         this._render(timestamp);
 
         this.__lastRender = timestamp;
-        if (!this._isPaused) {
-            this.__gameId = window.requestAnimationFrame(this._mainFrame.bind(this)); // it's usually call every 16ms
-        }
     }
 
     start() {
         this._setInitialState();
-        this._mainFrame(performance.now());
+        this._mainFrame(window.performance.now());
     }
 
     stop() {
@@ -153,9 +163,11 @@ class Game {
      */
     togglePause() {
         this._isPaused = !this._isPaused;
+
         // game is not paused, restore last render to tick
         if (!this._isPaused) {
-            this.__lastTick = this.__lastRender;
+            this.__lastTick = this.__lastRender = window.performance.now();
+            this._mainFrame(this.__lastTick);
         }
     }
 }

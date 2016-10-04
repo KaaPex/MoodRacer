@@ -25,15 +25,14 @@ class GameObject {
         this._name = "object";
 
         this._canvas = document.createElement('canvas');
-        this._canvas.width = this.size.width;
-        this._canvas.height = this.size.height;
 
         this._2dContext = this._canvas.getContext('2d');
-
     }
 
     _clearCanvas() {
-        // gray color
+        this._canvas.width = this.size.width;
+        this._canvas.height = this.size.height;
+        // default gray color
         this._2dContext.save();
         this._2dContext.fillStyle = this._state.clearColor;
         this._2dContext.fillRect(0, 0, this._canvas.width, this._canvas.height);
@@ -46,8 +45,6 @@ class GameObject {
 
     set size(size) {
         this.state = {size};
-        this._canvas.width = this._state.size.width;
-        this._canvas.height = this._state.size.height;
     }
 
     get size() {
@@ -77,10 +74,9 @@ class GameObject {
                                                        this.size.height * this._state.scale);
     }
 
-    update(lastTick) {
-        let progress = (performance.now() - lastTick) / 8;
+    update(progress) {
 
-        this.position.x += progress;
+        this.position.x += progress / 8; // to make a little slowly
 
         this._clearCanvas();
         this._2dContext.save();

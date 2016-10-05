@@ -1,0 +1,16 @@
+{
+  "cars": [
+    {
+      "name": "red",
+      "num_frames": 25,
+      "frames": [
+        {
+          "x": 28,
+          "y": 6,
+          "width": 113,
+          "height": 44
+        }
+      ]
+    }
+  ]
+}

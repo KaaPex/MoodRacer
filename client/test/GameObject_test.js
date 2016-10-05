@@ -31,7 +31,7 @@ describe('GameObject class logic', () => {
         expect(gameObject._state).to.deep.equal(newState);
     });
 
-     it ('set size value into GameState object and state is immutable', () => {
+    it ('set size value into GameState object and state is immutable', () => {
         let gameObject = new GameObject();
         let oldState = gameObject._state;
         const size = {width: 200, height: 200};
@@ -45,14 +45,13 @@ describe('GameObject class logic', () => {
 
         gameObject.size = size;
         expect(gameObject._state).to.deep.equal(newState);
-<<<<<<< HEAD
         //expect(gameObject._canvas.width).to.equal(size.width);
         //expect(gameObject._canvas.height).to.equal(size.height);
         expect(gameObject.size).to.equal(size);
 
     });
 
-     it ('set size value into GameState object thrue the state and state is immutable', () => {
+    it ('set size value into GameState object thrue the state and state is immutable', () => {
         let gameObject = new GameObject();
         let oldState = gameObject._state;
         const size = {width: 200, height: 200};
@@ -70,9 +69,5 @@ describe('GameObject class logic', () => {
         //expect(gameObject._canvas.height).to.equal(size.height);
         expect(gameObject.size).to.equal(size);
 
-=======
-        expect(gameObject._canvas.width).to.equal(size.width);
-        expect(gameObject._canvas.height).to.equal(size.height);
->>>>>>> origin/master
     });
 });

@@ -1,5 +1,4 @@
 "use strict";
-<<<<<<< HEAD
 
 import DataManager from './core/DataManager';
 import Game from './core/Game';
@@ -8,10 +7,6 @@ let test = document.querySelector(".js-test");
 
 
 let main = document.querySelector(".js-app");
-=======
-import Game from './core/Game';
-let main = document.querySelector(".app");
->>>>>>> origin/master
 let canvas = document.createElement("canvas");
 canvas.width = 800;
 canvas.height = 600;
@@ -27,7 +22,6 @@ dm.preLoad();
 let options = {fps: 60, debug: true};
 let game = new Game(canvas, options);
 game.start();
-<<<<<<< HEAD
 game.togglePause();
 
 let pauseBtn = document.querySelector(".js-pause");
@@ -39,8 +33,3 @@ pauseBtn.addEventListener("click", (event) => {
         event.target.innerHTML = "Pause";
     }
 });
-
-
-=======
-//game.togglePause();
->>>>>>> origin/master

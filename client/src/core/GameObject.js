@@ -25,7 +25,6 @@ class GameObject {
         this._name = "object";
 
         this._canvas = document.createElement('canvas');
-<<<<<<< HEAD
 
         this._2dContext = this._canvas.getContext('2d');
     }
@@ -34,17 +33,6 @@ class GameObject {
         this._canvas.width = this.size.width;
         this._canvas.height = this.size.height;
         // default gray color
-=======
-        this._canvas.width = this.size.width;
-        this._canvas.height = this.size.height;
-
-        this._2dContext = this._canvas.getContext('2d');
-
-    }
-
-    _clearCanvas() {
-        // gray color
->>>>>>> origin/master
         this._2dContext.save();
         this._2dContext.fillStyle = this._state.clearColor;
         this._2dContext.fillRect(0, 0, this._canvas.width, this._canvas.height);
@@ -57,11 +45,6 @@ class GameObject {
 
     set size(size) {
         this.state = {size};
-<<<<<<< HEAD
-=======
-        this._canvas.width = this._state.size.width;
-        this._canvas.height = this._state.size.height;
->>>>>>> origin/master
     }
 
     get size() {
@@ -85,22 +68,15 @@ class GameObject {
 
         let imgData = this._2dContext.getImageData(0, 0, this.size.width, this.size.height);
         mainContext.putImageData(imgData,
-                                                       this.position.x, this.position.y,
-                                                       0, 0,
-                                                       this.size.width * this._state.scale,
-                                                       this.size.height * this._state.scale);
+            this.position.x, this.position.y,
+            0, 0,
+            this.size.width * this._state.scale,
+            this.size.height * this._state.scale);
     }
 
-<<<<<<< HEAD
     update(progress) {
 
         this.position.x += progress / 8; // to make a little slowly
-=======
-    update(lastTick) {
-        let progress = (performance.now() - lastTick) / 8;
-
-        this.position.x += progress;
->>>>>>> origin/master
 
         this._clearCanvas();
         this._2dContext.save();

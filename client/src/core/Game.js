@@ -18,8 +18,13 @@ class Game {
         this._canvas = anchor;
         this._ctx = this._canvas.getContext('2d');
         this.__gameId = null;
+<<<<<<< HEAD
         this.__tickLength = options.fps / 3.75 || 16; // 60 fps is roughly 16ms
         this.__lastTick = window.performance.now();
+=======
+        this.__tick = options.fps / 3.75 || 16; // 60 fps is roughly 16ms
+        this.__lastTick = performance.now();
+>>>>>>> origin/master
         this.__lastRender = this.__lastTick;
         this._isPaused = false;
         this._isDebug = options.debug;
@@ -70,17 +75,25 @@ class Game {
             }
 
             //add static text
+<<<<<<< HEAD
             let sText = new StaticText("Hello i'am a long text for testing");
+=======
+            let sText = new StaticText();
+>>>>>>> origin/master
             sText.state = {
                 position: {
                     x: 100,
                     y: 300
+<<<<<<< HEAD
                 },
                 size: {
                     width: 300,
                     height: 100
                 },
                 clearColor: "green"
+=======
+                }
+>>>>>>> origin/master
             };
             this._objects.push(sText);
         }
@@ -93,13 +106,21 @@ class Game {
     _update() {
         // change game objects state with this.__lastTick
         this._objects.map( (object) => {
+<<<<<<< HEAD
             object.update(this.__tickLength);
+=======
+            object.update(this.__lastTick);
+>>>>>>> origin/master
         });
     }
 
     _queueUpdates(numTicks) {
         for(let i=0; i < numTicks; i++) {
+<<<<<<< HEAD
             this.__lastTick = this.__lastTick + this.__tickLength; //Now lastTick is this tick.
+=======
+            this.__lastTick = this.__lastTick + this.__tick; //Now lastTick is this tick.
+>>>>>>> origin/master
             this._update();
         }
     }
@@ -122,18 +143,24 @@ class Game {
      * @private
      */
     _mainFrame(timestamp) {
+<<<<<<< HEAD
         if (!this._isPaused) {
             this.__gameId = window.requestAnimationFrame(this._mainFrame.bind(this)); // it's usually call every 16ms
         }
 
         // evaluate when will be next render
         let nextTick = this.__lastTick + this.__tickLength;
+=======
+        // evaluate when will be next render
+        let nextTick = this.__lastTick + this.__tick;
+>>>>>>> origin/master
         let numTicks = 0;
 
         //If timestamp < nextTick then 0 ticks need to be updated (0 is default for numTicks).
         //If timestamp = nextTick then 1 tick needs to be updated (and so forth).
         if (timestamp > nextTick) {
             let timeSinceTick = timestamp - this.__lastTick;
+<<<<<<< HEAD
             // how many updates we should do beetween two rendered frames
             numTicks = Math.floor( timeSinceTick / this.__tickLength );
         }
@@ -141,17 +168,32 @@ class Game {
         // metrics
         this._fps = 1000 / (timestamp - this.__lastRender);
 
+=======
+            numTicks = Math.floor( timeSinceTick / this.__tick );
+        }
+        this._fps = 1000 / (timestamp - this.__lastRender);
+>>>>>>> origin/master
         // update  current state
         this._queueUpdates(numTicks);
         // render current frame
         this._render(timestamp);
 
         this.__lastRender = timestamp;
+<<<<<<< HEAD
+=======
+        if (!this._isPaused) {
+            this.__gameId = window.requestAnimationFrame(this._mainFrame.bind(this)); // it's usually call every 16ms
+        }
+>>>>>>> origin/master
     }
 
     start() {
         this._setInitialState();
+<<<<<<< HEAD
         this._mainFrame(window.performance.now());
+=======
+        this._mainFrame(performance.now());
+>>>>>>> origin/master
     }
 
     stop() {
@@ -163,11 +205,17 @@ class Game {
      */
     togglePause() {
         this._isPaused = !this._isPaused;
+<<<<<<< HEAD
 
         // game is not paused, restore last render to tick
         if (!this._isPaused) {
             this.__lastTick = this.__lastRender = window.performance.now();
             this._mainFrame(this.__lastTick);
+=======
+        // game is not paused, restore last render to tick
+        if (!this._isPaused) {
+            this.__lastTick = this.__lastRender;
+>>>>>>> origin/master
         }
     }
 }

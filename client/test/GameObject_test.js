@@ -45,6 +45,7 @@ describe('GameObject class logic', () => {
 
         gameObject.size = size;
         expect(gameObject._state).to.deep.equal(newState);
+<<<<<<< HEAD
         //expect(gameObject._canvas.width).to.equal(size.width);
         //expect(gameObject._canvas.height).to.equal(size.height);
         expect(gameObject.size).to.equal(size);
@@ -69,5 +70,9 @@ describe('GameObject class logic', () => {
         //expect(gameObject._canvas.height).to.equal(size.height);
         expect(gameObject.size).to.equal(size);
 
+=======
+        expect(gameObject._canvas.width).to.equal(size.width);
+        expect(gameObject._canvas.height).to.equal(size.height);
+>>>>>>> origin/master
     });
 });

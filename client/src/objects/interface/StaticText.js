@@ -6,6 +6,7 @@
 import GameObject from "../../core/GameObject";
 
 const DEFAULT_STATIC_TEXT_OPT = {
+<<<<<<< HEAD
     lineWidth: 200,
     fillStyle: "#fff",
     font: "22px serif",
@@ -13,6 +14,13 @@ const DEFAULT_STATIC_TEXT_OPT = {
     backgroundColor: "gray",
     marginLeft: 20,
     marginTop: 40
+=======
+    length: 50,
+    fillStyle: "#fff",
+    font: "22px serif",
+    textAlign: "left",
+    backgroundColor: "gray"
+>>>>>>> origin/master
 };
 
 class StaticText extends GameObject {
@@ -22,6 +30,7 @@ class StaticText extends GameObject {
         this._textOpt = options;
         this._text = text;
         this._name = "StaticText";
+<<<<<<< HEAD
         this._fontHeight = StaticText.getFontHeight(this._textOpt.font);
 
         // set canvas size for one line text with margin? if need
@@ -53,12 +62,33 @@ class StaticText extends GameObject {
                 this._2dContext.translate(this.size.width * this._state.scale / 2, this.size.height * this._state.scale / 2);
                 break;
         }
+=======
+        this.state = { size: {
+            width: 100,
+            height: 24
+        },
+        clearColor: "green"};
+
+        // we need measure text to fit it in multiline
+        this._lengthPerLine = 0;
+        this._measure();
+    }
+
+    _measure() {
+        this._2dContext.save();
+        this._2dContext.font = this._textOpt.font;
+        this._2dContext.textAlign = this._textOpt.textAlign;
+        let textMetrics = this._2dContext.measureText(this._text);
+        console.dir(textMetrics);
+        this._2dContext.restore();
+>>>>>>> origin/master
     }
 
     render(mainContext, timestamp) {
         //overrides
         this._clearCanvas();
 
+<<<<<<< HEAD
         this._2dContext.save();
         this._2dContext.fillStyle = this._textOpt.fillStyle;
         this._2dContext.font = this._textOpt.font;
@@ -102,3 +132,22 @@ class StaticText extends GameObject {
 }
 
 export default StaticText;
+=======
+        this._2dContext.fillStyle = this._textOpt.fillStyle;
+        this._2dContext.font = this._textOpt.font;
+        this._2dContext.textAlign = this._textOpt.textAlign;
+        this._2dContext.fillText(this._text, 0, 20);
+
+        super.render(mainContext, timestamp); // need to comment at all
+    }
+
+    update(lastTick) {
+        //overrides
+
+        // nothing, but if we add change text
+        // we nwwd call _measure method
+    }
+}
+
+export default StaticText;
+>>>>>>> origin/master

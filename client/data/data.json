@@ -1,16 +1,19 @@
 {
-  "cars": [
-    {
-      "name": "red",
-      "num_frames": 25,
-      "frames": [
-        {
-          "x": 28,
-          "y": 6,
-          "width": 113,
-          "height": 44
-        }
-      ]
-    }
-  ]
+  "carsData": {
+    "source": "./data/cars_sprite_sheets.gif",
+    "cars": [
+      {
+        "name": "red",
+        "numFrames": 25,
+        "frames": [
+          {
+            "x": 28,
+            "y": 6,
+            "width": 113,
+            "height": 44
+          }
+        ]
+      }
+    ]
+  }
 }

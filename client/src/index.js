@@ -15,7 +15,7 @@ canvas.className = 'game';
 main.appendChild(canvas);
 
 // Load data
-let dm = new DataManager('./data/cars_sprite_sheets.gif');
+let dm = new DataManager();
 dm.preLoad();
 
 // start game

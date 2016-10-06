@@ -16,20 +16,31 @@ main.appendChild(canvas);
 
 // Load data
 let dm = new DataManager();
-dm.preLoad();
+dm.preLoad()
+    .then(launchGame)
+    .catch( (error) => {
+        console.error(error);
+    });
 
-// start game
-let options = {fps: 60, debug: true};
-let game = new Game(canvas, options);
-game.start();
-game.togglePause();
+function launchGame() {
+    console.log("starting game");
+    // start game
+    try {
+        let options = {fps: 60, debug: true};
+        let game = new Game(canvas, dm, options);
+        game.start();
+        game.togglePause();
 
-let pauseBtn = document.querySelector(".js-pause");
-pauseBtn.addEventListener("click", (event) => {
-    game.togglePause();
-    if (event.target.innerHTML === "Pause") {
-        event.target.innerHTML = "Start";
-    } else {
-        event.target.innerHTML = "Pause";
+        let pauseBtn = document.querySelector(".js-pause");
+        pauseBtn.addEventListener("click", (event) => {
+            game.togglePause();
+            if (event.target.innerHTML === "Pause") {
+                event.target.innerHTML = "Start";
+            } else {
+                event.target.innerHTML = "Pause";
+            }
+        });
+    } catch (error) {
+        console.log(error);
     }
-});
+}

@@ -234,9 +234,16 @@
                         }
                     }
 
-                    this.handler(JSON.stringify(objForm));
+                    let resutl = this.handler(JSON.stringify(objForm));
 
-                    this._closeWin();
+                    if(resutl.type) {
+                        this._closeWin();
+                    } else {
+                        // обработчик ошибки
+                        alert(resutl.error);
+                    }
+
+
                 }
 
                 _closeWin() {
@@ -252,7 +259,12 @@
                 formElems: {
                     name: "Укажите Ваше имя"
                 }
-            }, function(data) { alert(data); });
+            }, function(data) {
+                //alert(data); что-то делаем с data по итогу вернем объект
+                return {
+                    type: true
+                };
+            });
 
             let setRoom = new ModalWinForm(".setRoom", {
                 header: "Создать комнату",
@@ -260,7 +272,13 @@
                     name: "Укажите Ваше имя",
                     room: "Название комнаты"
                 }
-            }, function(data) { alert(data); });
+            }, function(data) {
+                //alert(data); что-то делаем с data по итогу вернем объект
+                return {
+                    type: false,
+                    error: "Ошибка при обработке"
+                };
+            });
     })();
 </script>
 </body>

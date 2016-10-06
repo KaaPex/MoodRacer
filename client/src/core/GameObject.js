@@ -21,11 +21,8 @@ const DEFAULT_GAME_OBJECT_STATE = {
 class GameObject {
     constructor(state = DEFAULT_GAME_OBJECT_STATE) {
         this._state = state;
-
         this._name = "object";
-
         this._canvas = document.createElement('canvas');
-
         this._2dContext = this._canvas.getContext('2d');
     }
 

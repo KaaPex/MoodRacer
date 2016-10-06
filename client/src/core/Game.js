@@ -11,10 +11,15 @@ import StaticText from "../objects/interface/StaticText";
  * Main game class
  */
 class Game {
-    constructor(anchor, options = {fps: 60, debug: false} ) {
+    constructor(anchor, dm = null, options = {fps: 60, debug: false} ) {
         if (!anchor) {
             throw "Parent element not set";
         }
+
+        if (!dm) {
+            throw "No Data Manager found";
+        }
+        this.__dm = dm; // Data Manager
         this._canvas = anchor;
         this._ctx = this._canvas.getContext('2d');
         this.__gameId = null;
@@ -113,6 +118,15 @@ class Game {
         // render debug information on main screen
         if (this._isDebug) {
             this._debugElem.render(this);
+
+            // test Car Frame
+            let car = this.__dm.cars.red;
+            car.frames.forEach( (frame) => {
+                this._ctx.save();
+                //let data = frame.imgData.data.map( val => val === 255 ? 0 : val);
+                this._ctx.putImageData(frame.imgData, 100, 100);
+                this._ctx.restore();
+            });
         }
     }
 

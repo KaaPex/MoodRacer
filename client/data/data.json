@@ -1,6 +1,6 @@
 {
   "carsData": {
-    "source": "./data/cars_sprite_sheets.gif",
+    "source": "./data/cars_sprite_sheets.png",
     "cars": [
       {
         "name": "red",
@@ -8,9 +8,9 @@
         "frames": [
           {
             "x": 28,
-            "y": 6,
-            "width": 113,
-            "height": 44
+            "y": 10,
+            "width": 83,
+            "height": 34
           }
         ]
       }

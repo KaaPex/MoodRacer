@@ -18,17 +18,19 @@ class DataManager {
         // load async image
         return new Promise( (resolve, reject) => {
             // если использовать => то потеряется контекст и будет this = DataManager
-            imgElement.addEventListener('load', function() {
-                if (('naturalHeight' in this && this.naturalHeight + this.naturalWidth === 0) ||
-                    (this.width + this.height == 0)) {
-                    reject(new Error('Image not loaded:' + this.src));
+            imgElement.addEventListener('load', (event) => {
+                let imageElement = event.target;
+                if (('naturalHeight' in imageElement && imageElement.naturalHeight + imageElement.naturalWidth === 0) ||
+                    (imageElement.width + imageElement.height == 0)) {
+                    reject(new Error('Image not loaded:' + imageElement.src));
                 } else {
-                    resolve(this);
+                    resolve(imageElement);
                 }
             });
 
-            imgElement.addEventListener('error', function() {
-                reject(new Error('Image not loaded:' + this.src));
+            imgElement.addEventListener('error', (event) => {
+                let imageElement = event.target;
+                reject(new Error('Image not loaded:' + imageElement.src));
             });
         });
     }
@@ -55,13 +57,11 @@ class DataManager {
     }
 
     _createCarData(car, ctx) {
-
         this.cars[car.name] = car;
         this.cars[car.name].frames = car.frames.map( (frame) => {
             frame.imgData = ctx.getImageData(frame.x, frame.y, frame.width, frame.height);
             return frame;
         });
-
     }
 
     _loadCarsData() {

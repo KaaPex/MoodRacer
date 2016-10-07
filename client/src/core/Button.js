@@ -56,8 +56,6 @@ class Button {
 
         this.click = options.click;
 
-        this.utlis = new Utils();
-
         this.flagToMouse = 0;
 
         this._render(this.bgColor);
@@ -82,8 +80,8 @@ class Button {
         this.elem.appendChild(canvas);
         let ctx = canvas.getContext('2d');
 
-        this.width = this.utlis.getFontWidth(font, this.text) + this.paddingLeft + this.paddingRight;
-        this.height =  this.utlis.getFontHeight(font) + this.paddingTop + this.paddingBottom;
+        this.width = Utils.getFontWidth(font, this.text) + this.paddingLeft + this.paddingRight;
+        this.height = Utils.getFontHeight(font) + this.paddingTop + this.paddingBottom;
 
         canvas.width = this.width;
         canvas.height = this.height;

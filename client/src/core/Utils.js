@@ -2,7 +2,19 @@
 
 class Utils {
 
-    getFontHeight(font) {
+    static getImageSrc(width, height, imageData) {
+        if (!imageData) {
+            throw new Error("No Image Data");
+        }
+
+        let canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").putImageData(imageData, 0 ,0);
+        return canvas.toDataURL("image/png");
+    }
+
+    static getFontHeight(font) {
         let parent = document.createElement("span");
         parent.appendChild(document.createTextNode("height"));
         document.body.appendChild(parent);
@@ -12,7 +24,7 @@ class Utils {
         return height;
     }
 
-    getFontWidth(font, text) {
+    static getFontWidth(font, text) {
         let parent = document.createElement("span");
         parent.appendChild(document.createTextNode("width"));
         document.body.appendChild(parent);
@@ -23,7 +35,7 @@ class Utils {
         return width;
     }
 
-    roundedRect(ctx, x, y, width, height, radius, color) {
+    static roundedRect(ctx, x, y, width, height, radius, color) {
         ctx.beginPath();
         ctx.moveTo(x, y + radius);
         ctx.lineTo(x, y + height - radius);

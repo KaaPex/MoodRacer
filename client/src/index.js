@@ -14,6 +14,7 @@ canvas.className = 'game';
 
 main.appendChild(canvas);
 
+console.log("=== INIT ===");
 // Load data
 let dm = new DataManager();
 dm.preLoad()
@@ -23,13 +24,13 @@ dm.preLoad()
     });
 
 function launchGame() {
-    console.log("starting game");
+    console.log("=== Starting Game ===");
     // start game
     try {
         let options = {fps: 60, debug: true};
         let game = new Game(canvas, dm, options);
         game.start();
-        game.togglePause();
+        //game.togglePause(); // this is for test
 
         let pauseBtn = document.querySelector(".js-pause");
         pauseBtn.addEventListener("click", (event) => {
@@ -41,6 +42,6 @@ function launchGame() {
             }
         });
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }

@@ -4,6 +4,7 @@
  */
 "use strict";
 import Debug from "./Debug";
+import Utils from "./Utils";
 import GameObject from "./GameObject";
 import StaticText from "../objects/interface/StaticText";
 
@@ -123,8 +124,9 @@ class Game {
             let car = this.__dm.cars.red;
             car.frames.forEach( (frame) => {
                 this._ctx.save();
-                //let data = frame.imgData.data.map( val => val === 255 ? 0 : val);
-                this._ctx.putImageData(frame.imgData, 100, 100);
+                let img = new Image();
+                img.src = Utils.getImageSrc(frame.width, frame.height, frame.imgData);
+                this._ctx.drawImage(img, 100, 100);
                 this._ctx.restore();
             });
         }

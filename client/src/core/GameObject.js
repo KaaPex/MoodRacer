@@ -3,6 +3,7 @@
  * GameObject of client project
  */
 "use strict";
+import Utils from "./Utils";
 
 const DEFAULT_GAME_OBJECT_STATE = {
     position: {
@@ -21,11 +22,8 @@ const DEFAULT_GAME_OBJECT_STATE = {
 class GameObject {
     constructor(state = DEFAULT_GAME_OBJECT_STATE) {
         this._state = state;
-
         this._name = "object";
-
         this._canvas = document.createElement('canvas');
-
         this._2dContext = this._canvas.getContext('2d');
     }
 
@@ -66,12 +64,19 @@ class GameObject {
             this.position.x -= mainContext.canvas.width;
         }
 
+        // using image because we don't wont loose alfa channel
         let imgData = this._2dContext.getImageData(0, 0, this.size.width, this.size.height);
-        mainContext.putImageData(imgData,
-            this.position.x, this.position.y,
+        let img = new Image();
+        img.src = Utils.getImageSrc(this.size.width, this.size.width, imgData);
+
+        mainContext.drawImage(img,
             0, 0,
+            this.size.width, this.size.width,
+            this.position.x, this.position.y,
             this.size.width * this._state.scale,
             this.size.height * this._state.scale);
+
+        img = null;
     }
 
     update(progress) {

@@ -3,6 +3,7 @@
  * StaticText of client project
  */
 "use strict";
+import Utils from "../../core/Utils";
 import GameObject from "../../core/GameObject";
 
 const DEFAULT_STATIC_TEXT_OPT = {
@@ -22,23 +23,13 @@ class StaticText extends GameObject {
         this._textOpt = options;
         this._text = text;
         this._name = "StaticText";
-        this._fontHeight = StaticText.getFontHeight(this._textOpt.font);
+        this._fontHeight = Utils.getFontHeight(this._textOpt.font); // default 25px
 
         // set canvas size for one line text with margin? if need
         if (this._textOpt.marginLeft * 2 + this._textOpt.lineWidth > this._canvas.width) {
             this.size.width = this._textOpt.marginLeft * 2 + this._textOpt.lineWidth;
         }
         // we need measure text to fit it in multiline
-    }
-
-    static getFontHeight(font) {
-        let parent = document.createElement("span");
-        parent.appendChild(document.createTextNode("height"));
-        document.body.appendChild(parent);
-        parent.style.cssText = "font: " + font + "; white-space: nowrap; display: inline;";
-        let height = parent.offsetHeight;
-        document.body.removeChild(parent);
-        return height;
     }
 
     _alignText() {
@@ -69,7 +60,7 @@ class StaticText extends GameObject {
         let words = this._text.split(" ");
         words.map( (word) => {
             let testLine = line + word + " ";
-            let testLineWidth = this._2dContext.measureText(testLine).width;
+            let testLineWidth = Utils.getFontWidth(this._textOpt.font, testLine);
 
             if (testLineWidth > this._textOpt.lineWidth) {
                 this._2dContext.fillText(line, this._textOpt.marginLeft, marginTopOffset);
@@ -90,7 +81,9 @@ class StaticText extends GameObject {
         this._2dContext.restore();
 
         this._alignText();
-        super.render(mainContext, timestamp); // need to comment at all
+
+        // main render
+        super.render(mainContext, timestamp);
     }
 
     update(progress) {

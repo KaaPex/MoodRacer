@@ -18,17 +18,19 @@ class DataManager {
         // load async image
         return new Promise( (resolve, reject) => {
             // если использовать => то потеряется контекст и будет this = DataManager
-            imgElement.addEventListener('load', function() {
-                if (('naturalHeight' in this && this.naturalHeight + this.naturalWidth === 0) ||
-                    (this.width + this.height == 0)) {
-                    reject(new Error('Image not loaded:' + this.src));
+            imgElement.addEventListener('load', (event) => {
+                let imageElement = event.target;
+                if (('naturalHeight' in imageElement && imageElement.naturalHeight + imageElement.naturalWidth === 0) ||
+                    (imageElement.width + imageElement.height == 0)) {
+                    reject(new Error('Image not loaded:' + imageElement.src));
                 } else {
-                    resolve(this);
+                    resolve(imageElement);
                 }
             });
 
-            imgElement.addEventListener('error', function() {
-                reject(new Error('Image not loaded:' + this.src));
+            imgElement.addEventListener('error', (event) => {
+                let imageElement = event.target;
+                reject(new Error('Image not loaded:' + imageElement.src));
             });
         });
     }
@@ -41,32 +43,31 @@ class DataManager {
         rawFile.send(null);
 
         return new Promise( (resolve, reject) => {
-            rawFile.addEventListener("readystatechange", function(event) {
+            rawFile.addEventListener("readystatechange", (event) => {
                 let target = event.target;
                 if (target.readyState === 4 && target.status === 200) {
                     resolve(target.responseText);
                 }
             });
 
-            rawFile.addEventListener('error', function(event) {
+            rawFile.addEventListener('error', (event) => {
                 reject(new Error('JSON not loaded: ' + event.target.src));
             });
         });
     }
 
     _createCarData(car, ctx) {
-
         this.cars[car.name] = car;
         this.cars[car.name].frames = car.frames.map( (frame) => {
-            frame.data = ctx.getImageData(frame.x, frame.y, frame.width, frame.height);
+            frame.imgData = ctx.getImageData(frame.x, frame.y, frame.width, frame.height);
             return frame;
         });
-
     }
 
     _loadCarsData() {
         let carsData = this._config.carsData;
-        this._loadData(carsData.source).then((data) => {
+
+        return this._loadData(carsData.source).then((data) => {
             // create context of cars data
             let canvas = document.createElement("canvas");
             let ctx = canvas.getContext("2d");
@@ -87,16 +88,17 @@ class DataManager {
     }
 
     preLoad() {
-        this._loadConfig().then( (jsonData) => {
-            this._config = JSON.parse(jsonData);
-            console.log("Json loaded successfully");
-
-            // load cars
-            this._loadCarsData();
-            console.dir(this.cars);
-
-        }).catch( (error) => {
-            console.error("Error loading: " + error);
+        return new Promise( (resolve, reject) => {
+            this._loadConfig()
+            .then( (jsonData) => {
+                this._config = JSON.parse(jsonData);
+                console.log("Json loaded successfully");
+            })
+            .then(this._loadCarsData.bind(this))
+            .then(resolve)
+            .catch( (error) => {
+                reject("Error loading: " + error);
+            });
         });
     }
 }

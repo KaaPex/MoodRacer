@@ -23,7 +23,7 @@ class DataManager {
                     (imageElement.width + imageElement.height == 0)) {
                     reject(new Error('Image not loaded:' + imageElement.src));
                 } else {
-                    resolve(imgElement);
+                    resolve(imageElement);
                 }
             });
 

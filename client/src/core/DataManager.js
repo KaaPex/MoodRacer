@@ -13,7 +13,6 @@ class DataManager {
 
     _loadData(src) {
         let imgElement = new Image();
-        imgElement.src = src;
 
         // load async image
         return new Promise( (resolve, reject) => {
@@ -32,6 +31,8 @@ class DataManager {
                 let imageElement = event.target;
                 reject(new Error('Image not loaded:' + imageElement.src));
             });
+
+            imgElement.src = src;
         });
     }
 
@@ -40,7 +41,6 @@ class DataManager {
         rawFile.overrideMimeType("application/json");
         //call async request
         rawFile.open("GET", this._configSrc, true);
-        rawFile.send(null);
 
         return new Promise( (resolve, reject) => {
             rawFile.addEventListener("readystatechange", (event) => {
@@ -53,6 +53,8 @@ class DataManager {
             rawFile.addEventListener('error', (event) => {
                 reject(new Error('JSON not loaded: ' + event.target.src));
             });
+
+            rawFile.send(null);
         });
     }
 
@@ -67,13 +69,14 @@ class DataManager {
     _loadCarsData() {
         let carsData = this._config.carsData;
 
-        return this._loadData(carsData.source).then((data) => {
+        return this._loadData(carsData.source).then((imgData) => {
             // create context of cars data
             let canvas = document.createElement("canvas");
+            canvas.width = imgData.width;
+            canvas.height = imgData.height;
+
             let ctx = canvas.getContext("2d");
-            ctx.width = data.width;
-            ctx.height = data.height;
-            ctx.drawImage(data, 0, 0);
+            ctx.drawImage(imgData, 0, 0);
 
             // process cars
             let cars = carsData.cars;

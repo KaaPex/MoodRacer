@@ -1,10 +1,10 @@
 "use strict";
-
 import DataManager from './core/DataManager';
 import Game from './core/Game';
+import './styles/styles.css'; //Webpack can import CSS files too!
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 let test = document.querySelector(".js-test");
-
 
 let main = document.querySelector(".js-app");
 let canvas = document.createElement("canvas");

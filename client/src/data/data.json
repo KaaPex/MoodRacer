@@ -1,0 +1,93 @@
+{
+  "carsData": {
+    "source": "./data/cars_sprite_sheets.png",
+    "cars": [
+      {
+        "name": "red",
+        "width": 85,
+        "height": 35,
+        "numFrames": 25,
+        "frames": [
+          {
+            "x": 29,
+            "y": 7,
+            "width": 85,
+            "height": 35
+          },
+          {
+            "x": 112,
+            "y": 7,
+            "width": 85,
+            "height": 35
+          },
+          {
+            "x": 197,
+            "y": 7,
+            "width": 68,
+            "height": 35
+          },
+          {
+            "x": 265,
+            "y": 7,
+            "width": 52,
+            "height": 35
+          },
+          {
+            "x": 316,
+            "y": 7,
+            "width": 45,
+            "height": 35
+          },
+          {
+            "x": 362,
+            "y": 7,
+            "width": 45,
+            "height": 35
+          },
+          {
+            "x": 405,
+            "y": 7,
+            "width": 45,
+            "height": 35
+          },
+          {
+            "x": 446,
+            "y": 7,
+            "width": 50,
+            "height": 35
+          },
+          {
+            "x": 490,
+            "y": 7,
+            "width": 50,
+            "height": 35
+          },
+          {
+            "x": 536,
+            "y": 7,
+            "width": 52,
+            "height": 35
+          },
+          {
+            "x": 589,
+            "y": 7,
+            "width": 66,
+            "height": 35
+          },
+          {
+            "x": 655,
+            "y": 7,
+            "width": 85,
+            "height": 35
+          },
+          {
+            "x": 740,
+            "y": 7,
+            "width": 85,
+            "height": 35
+          }
+        ]
+      }
+    ]
+  }
+}

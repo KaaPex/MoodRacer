@@ -33,16 +33,14 @@ class Debug {
 
     init() {
         if (this._options.last_render) {
-            let lastRenderElem = this._debugElem.querySelector(".debug__last-render");
-            lastRenderElem = document.createElement("div");
+            let lastRenderElem = document.createElement("div");
             lastRenderElem.className = "debug__last-render";
             this._debugElem.appendChild(lastRenderElem);
             this._lastRenderElem = lastRenderElem;
         }
 
         if (this._options.fps) {
-            let fpsElem = this._debugElem.querySelector(".debug__fps");
-            fpsElem = document.createElement("div");
+            let fpsElem = document.createElement("div");
             fpsElem.className = "debug__fps";
             this._debugElem.appendChild(fpsElem);
             this._fpsElem = fpsElem;

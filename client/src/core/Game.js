@@ -126,7 +126,7 @@ class Game {
                 this._ctx.save();
                 let img = new Image();
                 img.src = Utils.getImageSrc(frame.width, frame.height, frame.imgData);
-                this._ctx.drawImage(img, 100, 100);
+                this._ctx.drawImage(img, frame.x - 30, frame.y + 80);
                 this._ctx.restore();
             });
         }

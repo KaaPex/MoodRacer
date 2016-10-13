@@ -189,6 +189,10 @@
 
                     let list = JSON.parse(state);
 
+                    list.sort(function (a, b) {
+                        return b.score - a.score;
+                    });
+
                     for (let key in list) {
                         let li = document.createElement("li");
 

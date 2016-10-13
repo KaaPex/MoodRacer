@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>MoodRacer</title>
-    <link rel="stylesheet" href="/style/style.css">
+    <!--<link rel="stylesheet" href="/style/style.css">-->
     <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
 
     <style>
@@ -23,7 +23,7 @@
             height: 80px;
             text-align: center;
             border-radius: 6px;
-            background: rgba(204,255,102,.95);
+            background: rgba(204, 255, 102, .95);
             border: 1px solid #ddd;
             font-size: 22px;
             padding-top: 23px;
@@ -35,13 +35,13 @@
         .button:hover,
         .button:focus,
         .button:active {
-            background: rgba(204,255,204,.95);
+            background: rgba(204, 255, 204, .95);
             color: #000;
         }
 
         .bestResult {
             margin-top: 30px;
-            background: rgba(204,255,255,.96);
+            background: rgb(204, 255, 255);
             height: 400px;
             border-radius: 6px;
             border: 1px solid #ddd;
@@ -63,7 +63,7 @@
             bottom: 0;
             left: 0;
             z-index: 1040;
-            background-color: rgba(0,0,0,.7);
+            background-color: rgba(0, 0, 0, .7);
         }
 
         .modalPl {
@@ -85,6 +85,7 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
+
         .modalPl > form > input {
             margin-top: 10px;
         }
@@ -105,6 +106,40 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
+        }
+
+        .stateList {
+            list-style-type: none;
+            padding: 10px 25px;
+            margin: 0;
+        }
+
+        .stateList li {
+            border-bottom: 1px dotted #000;
+            line-height: 1.0;
+            margin: 0 0 .5em 0;
+            position: relative;
+            width: 100%;
+            float: left;
+        }
+
+        .stateList li em {
+            float: left;
+            margin: 0;
+            position: relative;
+            top: .2em;
+            padding: 0 5px 0 0;
+            background: rgb(204, 255, 255);
+            font-style: normal;
+        }
+
+        .stateList li span {
+            background: rgb(204, 255, 255);
+            padding: 1px 0 1px 5px;
+            float: right;
+            color: #000;
+            position: relative;
+            top: .2em;
         }
 
 
@@ -140,145 +175,175 @@
         <div class="aboutProect"><a href="#">О проекте</a></div>
     </div>
 </div>
-
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script>
-    ;(function() {
+    ;
+    (function () {
+        const socket = io(`${location.protocol}//${location.hostname}:8099`);
+        // subscribing to server state
+        socket.on('state', function (state) {
+                    let el = document.querySelector(".bestResult");
 
-            class ModalWinForm {
-                constructor(elem, option, handler) {
-                    this.elem = document.querySelector(elem);
-                    this.header = option.header; // заголовок
+                    let ul = document.createElement("ul");
+                    ul.classList.add("stateList");
 
-                    this.formElems = option.formElems; // inputs
+                    let list = JSON.parse(state);
 
-                    this.handler = handler; // обработчик
+                    for (let key in list) {
+                        let li = document.createElement("li");
 
-                    this._initLsn();
-                }
+                        let em = document.createElement("em");
+                        em.innerHTML = (+key+1)+". "+list[key]['name'];
 
-                _initLsn() {
-                    this.elem.addEventListener('click', this._renderWin.bind(this));
-                }
+                        let span = document.createElement("span");
+                        span.innerHTML = list[key]['score'];
 
-                _createBg() {
-                    this.bgDiv = document.createElement("div");
-                    this.bgDiv.classList.add("modalBgPl");
-                    document.body.appendChild(this.bgDiv);
-                    this.bgDiv.addEventListener('click', this._closeWin.bind(this));
-                }
+                        li.appendChild(em);
+                        li.appendChild(span);
 
-                _renderWin() {
-                    this._createBg();
-
-                    this.win = document.createElement("div");
-                    this.win.classList.add("modalPl");
-
-                    let heading = document.createElement("div");
-                    heading.classList.add("modalPl_heading");
-                    heading.innerHTML = this.header;
-                    this.win.appendChild(heading);
-
-                    let form = document.createElement("form");
-                    form.addEventListener('submit', this._submitForm.bind(this, form));
-
-                    form.action = "#";
-                    form.method = "POST";
-
-                    for(let val in this.formElems) {
-                        let input = document.createElement("input");
-                        input.classList.add("form-control");
-                        input.required = true;
-                        input.name = val;
-                        input.placeholder = this.formElems[val];
-                        form.appendChild(input);
+                        ul.appendChild(li);
                     }
+                    el.appendChild(ul);
+                    //console.log(state);
+                }
+        );
 
-                    let divBtn = document.createElement("div");
-                    divBtn.classList.add("modalPl_form_divBtn");
+        class ModalWinForm {
+            constructor(elem, option, handler) {
+                this.elem = document.querySelector(elem);
+                this.header = option.header; // заголовок
 
+                this.formElems = option.formElems; // inputs
 
-                    let btnSubmit = document.createElement("button");
-                    let btnReset = document.createElement("button");
+                this.handler = handler; // обработчик
 
-                    btnSubmit.type = "submit";
-                    btnReset.type = "reset";
+                this._initLsn();
+            }
 
-                    btnSubmit.classList.add("btn", "btn-success");
-                    btnReset.classList.add("btn","btn-danger");
+            _initLsn() {
+                this.elem.addEventListener('click', this._renderWin.bind(this));
+            }
 
-                    btnSubmit.style.marginRight = "10px";
+            _createBg() {
+                this.bgDiv = document.createElement("div");
+                this.bgDiv.classList.add("modalBgPl");
+                document.body.appendChild(this.bgDiv);
+                this.bgDiv.addEventListener('click', this._closeWin.bind(this));
+            }
 
-                    btnSubmit.innerHTML = "Отправить";
-                    btnReset.innerHTML = "Закрыть";
+            _renderWin() {
+                this._createBg();
 
-                    btnReset.addEventListener('click', this._closeWin.bind(this));
+                this.win = document.createElement("div");
+                this.win.classList.add("modalPl");
 
-                    divBtn.appendChild(btnSubmit);
-                    divBtn.appendChild(btnReset);
+                let heading = document.createElement("div");
+                heading.classList.add("modalPl_heading");
+                heading.innerHTML = this.header;
+                this.win.appendChild(heading);
 
-                    form.appendChild(divBtn);
+                let form = document.createElement("form");
+                form.addEventListener('submit', this._submitForm.bind(this, form));
 
-                    this.win.appendChild(form);
+                form.action = "#";
+                form.method = "POST";
 
-                    document.body.appendChild(this.win);
+                for (let val in this.formElems) {
+                    let input = document.createElement("input");
+                    input.classList.add("form-control");
+                    input.required = true;
+                    input.name = val;
+                    input.placeholder = this.formElems[val];
+                    form.appendChild(input);
                 }
 
-                _submitForm(form) {
-                    event.preventDefault();
+                let divBtn = document.createElement("div");
+                divBtn.classList.add("modalPl_form_divBtn");
 
-                    let objForm = {};
 
-                    for(let i = 0; i < form.elements.length; i++){
-                        if(form.elements[i].tagName === "INPUT") {
-                            objForm[form.elements[i].name] = form.elements[i].value;
-                        }
+                let btnSubmit = document.createElement("button");
+                let btnReset = document.createElement("button");
+
+                btnSubmit.type = "submit";
+                btnReset.type = "reset";
+
+                btnSubmit.classList.add("btn", "btn-success");
+                btnReset.classList.add("btn", "btn-danger");
+
+                btnSubmit.style.marginRight = "10px";
+
+                btnSubmit.innerHTML = "Отправить";
+                btnReset.innerHTML = "Закрыть";
+
+                btnReset.addEventListener('click', this._closeWin.bind(this));
+
+                divBtn.appendChild(btnSubmit);
+                divBtn.appendChild(btnReset);
+
+                form.appendChild(divBtn);
+
+                this.win.appendChild(form);
+
+                document.body.appendChild(this.win);
+            }
+
+            _submitForm(form) {
+                event.preventDefault();
+
+                let objForm = {};
+
+                for (let i = 0; i < form.elements.length; i++) {
+                    if (form.elements[i].tagName === "INPUT") {
+                        objForm[form.elements[i].name] = form.elements[i].value;
                     }
-
-                    let resutl = this.handler(JSON.stringify(objForm));
-
-                    if(resutl.type) {
-                        this._closeWin();
-                    } else {
-                        // обработчик ошибки
-                        alert(resutl.error);
-                    }
-
-
                 }
 
-                _closeWin() {
-                    document.body.removeChild(this.bgDiv);
-                    document.body.removeChild(this.win);
+                let resutl = this.handler(JSON.stringify(objForm));
+
+                if (resutl.type) {
+                    alert(JSON.stringify(objForm));
+                    this._closeWin();
+                } else {
+                    // обработчик ошибки
+                    alert(JSON.stringify(objForm) + "\n\n" + resutl.error);
                 }
             }
 
+            _closeWin() {
+                document.body.removeChild(this.bgDiv);
+                document.body.removeChild(this.win);
 
-            // создаем модальные окна
-            let startAllone = new ModalWinForm(".startAllone", {
-                header: "Играть одному",
-                formElems: {
-                    name: "Укажите Ваше имя"
-                }
-            }, function(data) {
-                //alert(data); что-то делаем с data по итогу вернем объект
-                return {
-                    type: true
-                };
-            });
+                this.bgDiv.removeEventListener('click', this._closeWin.bind(this));
+            }
+        }
 
-            let setRoom = new ModalWinForm(".setRoom", {
-                header: "Создать комнату",
-                formElems: {
-                    name: "Укажите Ваше имя",
-                    room: "Название комнаты"
-                }
-            }, function(data) {
-                //alert(data); что-то делаем с data по итогу вернем объект
-                return {
-                    type: false,
-                    error: "Ошибка при обработке"
-                };
-            });
+
+        // создаем модальные окна
+        let startAllone = new ModalWinForm(".startAllone", {
+            header: "Играть одному",
+            formElems: {
+                name: "Укажите Ваше имя"
+            }
+        }, function (data) {
+            //alert(data); что-то делаем с data по итогу вернем объект
+            return {
+                type: true
+            };
+        });
+
+        let setRoom = new ModalWinForm(".setRoom", {
+            header: "Создать комнату",
+            formElems: {
+                name: "Укажите Ваше имя",
+                room: "Название комнаты"
+            }
+        }, function (data) {
+            //alert(data); что-то делаем с data по итогу вернем объект
+            return {
+                type: false,
+                error: "Ошибка при обработке"
+            };
+        });
     })();
 </script>
 </body>

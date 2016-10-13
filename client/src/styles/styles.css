@@ -14,7 +14,7 @@ body {
     height: 80px;
     text-align: center;
     border-radius: 6px;
-    background: rgba(204,255,102,.95);
+    background: rgba(204, 255, 102, .95);
     border: 1px solid #ddd;
     font-size: 22px;
     padding-top: 23px;
@@ -26,13 +26,13 @@ body {
 .button:hover,
 .button:focus,
 .button:active {
-    background: rgba(204,255,204,.95);
+    background: rgba(204, 255, 204, .95);
     color: #000;
 }
 
 .bestResult {
     margin-top: 30px;
-    background: rgba(204,255,255,.96);
+    background: rgb(204, 255, 255);
     height: 400px;
     border-radius: 6px;
     border: 1px solid #ddd;
@@ -54,7 +54,7 @@ body {
     bottom: 0;
     left: 0;
     z-index: 1040;
-    background-color: rgba(0,0,0,.7);
+    background-color: rgba(0, 0, 0, .7);
 }
 
 .modalPl {
@@ -76,6 +76,7 @@ body {
     margin-bottom: 10px;
     font-weight: 600;
 }
+
 .modalPl > form > input {
     margin-top: 10px;
 }
@@ -96,4 +97,38 @@ body {
     text-decoration: none;
     font-size: 14px;
     font-weight: 600;
+}
+
+.stateList {
+    list-style-type: none;
+    padding: 10px 25px;
+    margin: 0;
+}
+
+.stateList li {
+    border-bottom: 1px dotted #000;
+    line-height: 1.0;
+    margin: 0 0 .5em 0;
+    position: relative;
+    width: 100%;
+    float: left;
+}
+
+.stateList li em {
+    float: left;
+    margin: 0;
+    position: relative;
+    top: .2em;
+    padding: 0 5px 0 0;
+    background: rgb(204, 255, 255);
+    font-style: normal;
+}
+
+.stateList li span {
+    background: rgb(204, 255, 255);
+    padding: 1px 0 1px 5px;
+    float: right;
+    color: #000;
+    position: relative;
+    top: .2em;
 }

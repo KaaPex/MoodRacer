@@ -86,17 +86,20 @@ body {
     margin-top: 15px;
 }
 
-.aboutProect {
+.aboutProject {
     float: right;
     padding-top: 10px;
 }
 
-.aboutProect > a {
+.aboutProject > a {
     text-transform: uppercase;
     color: #fff;
     text-decoration: none;
     font-size: 14px;
     font-weight: 600;
+}
+.aboutProject > a:hover {
+    color: #fff;
 }
 
 .stateList {

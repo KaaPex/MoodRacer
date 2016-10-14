@@ -12,7 +12,7 @@ class Main {
             throw new Error("No element selected");
         }
         this._elem = elem;
-        this._startAllone = null;
+        this._startAlone = null;
         this._setRoom = null;
         this._bestResult = null;
     }
@@ -21,7 +21,7 @@ class Main {
         // создаем модальные окна
         // пока так, но надо будет переделать
 
-        new ModalWinForm(this._startAllone, {
+        new ModalWinForm(this._startAlone, {
             header: "Играть одному",
             formElems: {
                 name: "Укажите Ваше имя"
@@ -46,18 +46,18 @@ class Main {
             //alert(data); что-то делаем с data по итогу вернем объект
             return {
                 type: false,
-                error: "Ошибка при обработке"
+                error: "Отладка: Ошибка при обработке"
             };
         });
     }
 
     _init() {
         this._elem.innerHTML = template();
-        this._startAllone = document.querySelector(".startAllone");
+        this._startAlone = document.querySelector(".startAlone");
         this._setRoom = document.querySelector(".setRoom");
         this._setModal();
 
-        // only for test, don't forget deleted it !!!
+        // TODO only for test, don't forget deleted it !!!
         let testBtn = document.querySelector(".js-test-game");
         testBtn.onclick = () => {
             let gameForm = new GameForm(this._elem);

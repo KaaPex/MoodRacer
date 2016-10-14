@@ -92,7 +92,6 @@ class ModalWinForm {
 
     _submitForm(form) {
         event.preventDefault();
-
         let objForm = {};
 
         for (let i = 0; i < form.elements.length; i++) {
@@ -101,14 +100,12 @@ class ModalWinForm {
             }
         }
 
-        let resutl = this._callback(JSON.stringify(objForm));
+        let result = this._callback(JSON.stringify(objForm));
 
-        if (resutl.type) {
-            alert(JSON.stringify(objForm));
+        if (result.type) {
             this._closeWin();
-        } else {
-            // обработчик ошибки
-            alert(JSON.stringify(objForm) + "\n\n" + resutl.error);
+        } else { // обработка ошибки
+            alert(result.error);
         }
     }
 

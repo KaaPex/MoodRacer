@@ -26,7 +26,7 @@ class StaticText extends GameObject {
         this._fontHeight = Utils.getFontHeight(this._textOpt.font); // default 25px
 
         // set canvas size for one line text with margin? if need
-        if (this._textOpt.marginLeft * 2 + this._textOpt.lineWidth > this._canvas.width) {
+        if (this._textOpt.marginLeft * 2 + this._textOpt.lineWidth > this.size.width) {
             this.size.width = this._textOpt.marginLeft * 2 + this._textOpt.lineWidth;
         }
         // we need measure text to fit it in multiline
@@ -86,7 +86,7 @@ class StaticText extends GameObject {
         super.render(mainContext, timestamp);
     }
 
-    update(progress) {
+    update(lastTick) {
         //overrides
 
         // nothing, but if we add change text

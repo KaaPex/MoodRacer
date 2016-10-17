@@ -25,3 +25,8 @@ npm run test
 npm run build
 npm run build:html
 ```
+
+# For supporting canvas with jsdom in test 
+```
+https://www.npmjs.com/package/canvas
+```

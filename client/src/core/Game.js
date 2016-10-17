@@ -99,7 +99,7 @@ class Game {
     _update() {
         // change game objects state with this.__lastTick
         this._objects.map( (object) => {
-            object.update(this.__tickLength);
+            object.update(this.__lastTick);
         });
     }
 

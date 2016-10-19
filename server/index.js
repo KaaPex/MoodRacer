@@ -9,8 +9,4 @@ export const store = makeStore();
 
 startServer(store);
 
-
-
-
-
 //store.dispatch({type: 'NEW_GAME'});

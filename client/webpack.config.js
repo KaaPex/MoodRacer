@@ -27,6 +27,7 @@ module.exports = {
           presets: ['es2015', 'stage-1']
         }
       },
+      {test: /\.pug$/, loader: "pug" },
       {test: /\.css$/, loaders: ['style', 'css']},
       {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
       {test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000'},

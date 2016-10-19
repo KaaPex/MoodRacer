@@ -21,15 +21,15 @@ const DEFAULT_GAME_OBJECT_STATE = {
 
 class GameObject {
     constructor(state = DEFAULT_GAME_OBJECT_STATE) {
-        this._state = state;
         this._name = "object";
         this._canvas = document.createElement('canvas');
         this._2dContext = this._canvas.getContext('2d');
+        //this._lastrender = window.performance.now();
+
+        this._state = state;
     }
 
     _clearCanvas() {
-        this._canvas.width = this.size.width;
-        this._canvas.height = this.size.height;
         // default gray color
         this._2dContext.save();
         this._2dContext.fillStyle = this._state.clearColor;
@@ -39,6 +39,8 @@ class GameObject {
 
     set state(state) {
         this._state = Object.assign({}, this._state, state);
+        this._canvas.width = this.size.width;
+        this._canvas.height = this.size.height;
     }
 
     set size(size) {
@@ -67,21 +69,22 @@ class GameObject {
         // using image because we don't wont loose alfa channel
         let imgData = this._2dContext.getImageData(0, 0, this.size.width, this.size.height);
         let img = new Image();
-        img.src = Utils.getImageSrc(this.size.width, this.size.width, imgData);
+        img.src = Utils.getImageSrc(this.size.width, this.size.height, imgData);
 
         mainContext.drawImage(img,
             0, 0,
-            this.size.width, this.size.width,
+            this.size.width, this.size.height,
             this.position.x, this.position.y,
             this.size.width * this._state.scale,
             this.size.height * this._state.scale);
 
         img = null;
+        this._lastrender = timestamp;
     }
 
-    update(progress) {
+    update(lastTick) {
 
-        this.position.x += progress / 8; // to make a little slowly
+        this.position.x += (lastTick - this._lastrender) / 4; // to make a little slowly
 
         this._clearCanvas();
         this._2dContext.save();
